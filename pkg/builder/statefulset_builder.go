@@ -19,10 +19,13 @@ import (
 )
 
 const (
-	StorageVolume           = "storage"
-	StorageMountPath        = "/var/lib/mysql"
-	ConfigVolume            = "config"
-	ConfigMountPath         = "/etc/mysql/conf.d"
+	StorageVolume    = "storage"
+	StorageMountPath = "/var/lib/mysql"
+	ConfigVolume     = "config"
+	ConfigMountPath  = "/etc/mysql/conf.d"
+	BackupVolume     = "backup"
+	BackupMountPath  = "/backup"
+
 	ServiceAccountVolume    = "serviceaccount"
 	ServiceAccountMountPath = "/var/run/secrets/kubernetes.io/serviceaccount"
 
@@ -194,6 +197,22 @@ func buildStsVolumes(mariadb *mariadbv1alpha1.MariaDB) []corev1.Volume {
 	volumes := []corev1.Volume{
 		configVolume,
 	}
+
+	if mariadb.Spec.BootstrapFrom != nil && *mariadb.Spec.BootstrapFrom.Type == "mariabackup" && mariadb.Spec.BootstrapFrom.BackupRef != nil {
+
+		backupVolume := corev1.Volume{
+			Name: BackupVolume,
+			VolumeSource: corev1.VolumeSource{
+				PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
+					ClaimName: mariadb.Spec.BootstrapFrom.BackupRef.Name,
+					ReadOnly:  true,
+				},
+			},
+		}
+
+		volumes = append(volumes, backupVolume)
+	}
+
 	if mariadb.Galera().Enabled {
 		volumes = append(volumes, corev1.Volume{
 			Name: ServiceAccountVolume,

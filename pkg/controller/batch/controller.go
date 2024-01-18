@@ -41,11 +41,20 @@ func (r *BatchReconciler) Reconcile(ctx context.Context, parentObj client.Object
 
 func (r *BatchReconciler) reconcileStorage(ctx context.Context, parentObj client.Object,
 	mariadb *mariadbv1alpha1.MariaDB) error {
-	backup, ok := parentObj.(*mariadbv1alpha1.Backup)
-	if !ok {
+
+	backup, okBackup := parentObj.(*mariadbv1alpha1.Backup)
+
+	if okBackup && backup.Spec.Storage.PersistentVolumeClaim == nil {
 		return nil
 	}
-	if ok && backup.Spec.Storage.PersistentVolumeClaim == nil {
+
+	mariaBackup, okMariaBackup := parentObj.(*mariadbv1alpha1.MariaBackup)
+
+	if okMariaBackup && mariaBackup.Spec.Storage.PersistentVolumeClaim == nil {
+		return nil
+	}
+
+	if !okBackup && !okMariaBackup {
 		return nil
 	}
 
@@ -59,7 +68,16 @@ func (r *BatchReconciler) reconcileStorage(ctx context.Context, parentObj client
 		return fmt.Errorf("error creating PersistentVolumeClaim: %v", err)
 	}
 
-	pvc := r.builder.BuildPVC(key, &backup.Spec.Storage, mariadb)
+	var pvc *corev1.PersistentVolumeClaim
+
+	if okBackup {
+		pvc = r.builder.BuildBackupPVC(key, &backup.Spec.Storage, mariadb)
+	} else if okMariaBackup {
+		pvc = r.builder.BuildMariaBackupPVC(key, &mariaBackup.Spec.Storage, mariadb)
+	} else {
+		return nil
+	}
+
 	if err := r.Create(ctx, pvc); err != nil {
 		return fmt.Errorf("error creating PersistentVolumeClain: %v", err)
 	}
@@ -92,6 +110,11 @@ func (r *BatchReconciler) buildBatch(ctx context.Context, parentObj client.Objec
 			return r.builder.BuildBackupCronJob(key, backup, mariadb)
 		}
 		return r.builder.BuildBackupJob(key, backup, mariadb)
+	} else if backup, ok := parentObj.(*mariadbv1alpha1.MariaBackup); ok {
+		if backup.Spec.Schedule != nil {
+			return r.builder.BuildMariaBackupCronJob(key, backup, mariadb)
+		}
+		return r.builder.BuildMariaBackupJob(key, backup, mariadb)
 	}
 
 	if restore, ok := parentObj.(*mariadbv1alpha1.Restore); ok {

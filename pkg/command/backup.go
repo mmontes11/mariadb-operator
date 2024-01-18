@@ -125,6 +125,32 @@ func NewBackupCommand(userOpts ...BackupOpt) (*BackupCommand, error) {
 	return &BackupCommand{opts}, nil
 }
 
+func (b *BackupCommand) MariadbBackup(backup *mariadbv1alpha1.MariaBackup,
+	mariadb *mariadbv1alpha1.MariaDB) *Command {
+
+	cmds := []string{
+		"set -euo pipefail",
+		"echo '💾 Taking physical backup'",
+		"export backupdir=/backup/mariabackup-$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+		"mkdir -p ${backupdir}",
+		fmt.Sprintf(
+			"mariadb-backup --host=%s-primary --backup "+
+				"--target-dir=${backupdir} --user=${MARIADB_OPERATOR_USER} "+
+				"--password=${MARIADB_OPERATOR_PASSWORD} ",
+			mariadb.Name),
+		"echo '📜 Backup completed'",
+		"echo '🧹 Cleaning up old backups'",
+		fmt.Sprintf(
+			"find /backup/ -type d -mtime +%d -exec rm -r {} \\; || true",
+			backup.Spec.MaxRetentionDays,
+		),
+		"echo '📜 Backup history'",
+		"du -h --max-depth=1 /backup/ | sort -k2 ",
+	}
+
+	return NewBashCommand(cmds)
+}
+
 func (b *BackupCommand) MariadbDump(backup *mariadbv1alpha1.Backup,
 	mariadb *mariadbv1alpha1.MariaDB) *Command {
 	dumpOpts := "--single-transaction --events --routines --dump-slave=2 --master-data=2 --gtid --all-databases"

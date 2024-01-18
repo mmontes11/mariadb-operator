@@ -900,6 +900,9 @@ spec:
                     type: string
                 type: object
                 x-kubernetes-map-type: atomic
+              fileName:
+                description: FileName is the file within the source to be restored.
+                type: string
               logLevel:
                 default: info
                 description: LogLevel to be used n the Backup Job. It defaults to
@@ -1491,6 +1494,9 @@ spec:
                       type: string
                   type: object
                 type: array
+              type:
+                description: Type is the type of backup. (mariabackup or mariadump)
+                type: string
               volume:
                 description: Volume is a Kubernetes Volume object that contains a
                   backup.

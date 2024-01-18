@@ -1,0 +1,66 @@
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb-repl-restore
+spec:
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 1Gi
+    accessModes:
+      - ReadWriteOnce
+
+  bootstrapFrom:
+    backupRef:
+      name: mariadb-repl-mariabackup
+    type: mariabackup
+    fileName: mariabackup-2023-12-26T20:22:06Z
+
+  image: mariadb:11.0.3
+
+  port: 3306
+
+  replicas: 2
+
+  replication:
+    enabled: true
+    primary:
+      podIndex: 0
+      automaticFailover: true
+    replica:
+      waitPoint: AfterSync
+      gtid: CurrentPos
+      replPasswordSecretKeyRef:
+        name: mariadb
+        key: password
+      connectionTimeout: 10s
+      connectionRetries: 10
+      syncTimeout: 10s
+    syncBinlog: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+
+  env:
+    - name: TZ
+      value: SYSTEM
+
+  envFrom:
+    - configMapRef:
+        name: mariadb-repl-config
+
+  passwordSecretKeyRef:
+    name: mariadb
+    key: password
+
+  rootPasswordSecretKeyRef:
+    name: mariadb
+    key: root-password
+
+
+

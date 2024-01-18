@@ -321,7 +321,7 @@ func (r *MariaDBReconciler) reconcileGalera(ctx context.Context, mariadb *mariad
 }
 
 func (r *MariaDBReconciler) reconcileRestore(ctx context.Context, mariadb *mariadbv1alpha1.MariaDB) (ctrl.Result, error) {
-	if mariadb.Spec.BootstrapFrom == nil {
+	if mariadb.Spec.BootstrapFrom == nil || *mariadb.Spec.BootstrapFrom.Type == "mariabackup" {
 		return ctrl.Result{}, nil
 	}
 	if mariadb.HasRestoredBackup() {

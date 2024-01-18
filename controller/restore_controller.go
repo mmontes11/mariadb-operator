@@ -43,6 +43,12 @@ func (r *RestoreReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	}
 
 	mariaDb, err := r.RefResolver.MariaDB(ctx, &restore.Spec.MariaDBRef, restore.Namespace)
+
+	if mariaDb.Spec.BootstrapFrom != nil && *mariaDb.Spec.BootstrapFrom.Type == "mariabackup" {
+		// skip restore reconciler for the mariadbbackup restore
+		return ctrl.Result{}, nil
+	}
+
 	if err != nil {
 		var mariaDbErr *multierror.Error
 		mariaDbErr = multierror.Append(mariaDbErr, err)

@@ -299,6 +299,14 @@ type RestoreSource struct {
 	// +optional
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
 	TargetRecoveryTime *metav1.Time `json:"targetRecoveryTime,omitempty" webhook:"inmutable"`
+	// FileName is the file within the source to be restored.
+	// +optional
+	// +operator-sdk:csv:customresourcedefinitions:type=spec
+	FileName *string `json:"fileName,omitempty" webhook:"inmutableinit"`
+	// Type is the type of backup. (mariabackup or mariadump)
+	// +optional
+	// +operator-sdk:csv:customresourcedefinitions:type=spec
+	Type *string `json:"type,omitempty" webhook:"inmutableinit"`
 }
 
 func (r *RestoreSource) Validate() error {

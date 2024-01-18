@@ -1,10 +1,11 @@
 resources:
-- bases/mariadb.mmontes.io_mariadbs.yaml
-- bases/mariadb.mmontes.io_backups.yaml
-- bases/mariadb.mmontes.io_restores.yaml
-- bases/mariadb.mmontes.io_users.yaml
-- bases/mariadb.mmontes.io_grants.yaml
-- bases/mariadb.mmontes.io_databases.yaml
-- bases/mariadb.mmontes.io_connections.yaml
-- bases/mariadb.mmontes.io_sqljobs.yaml
+  - bases/mariadb.mmontes.io_mariadbs.yaml
+  - bases/mariadb.mmontes.io_backups.yaml
+  - bases/mariadb.mmontes.io_mariabackups.yaml
+  - bases/mariadb.mmontes.io_restores.yaml
+  - bases/mariadb.mmontes.io_users.yaml
+  - bases/mariadb.mmontes.io_grants.yaml
+  - bases/mariadb.mmontes.io_databases.yaml
+  - bases/mariadb.mmontes.io_connections.yaml
+  - bases/mariadb.mmontes.io_sqljobs.yaml
   #+kubebuilder:scaffold:crdkustomizeresource

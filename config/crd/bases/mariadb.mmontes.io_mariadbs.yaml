@@ -897,6 +897,9 @@ spec:
                         type: string
                     type: object
                     x-kubernetes-map-type: atomic
+                  fileName:
+                    description: FileName is the file within the source to be restored.
+                    type: string
                   s3:
                     description: S3 defines the configuration to restore backups from
                       a S3 compatible storage. It has priority over Volume.
@@ -1016,6 +1019,9 @@ spec:
                       date and time that defines the point in time recovery objective.
                       It is used to determine the closest restoration source in time.
                     format: date-time
+                    type: string
+                  type:
+                    description: Type is the type of backup. (mariabackup or mariadump)
                     type: string
                   volume:
                     description: Volume is a Kubernetes Volume object that contains

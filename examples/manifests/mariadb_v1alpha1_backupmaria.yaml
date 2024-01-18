@@ -1,0 +1,23 @@
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaBackup
+metadata:
+  name: mariadb-repl-mariabackup
+spec:
+  mariaDbRef:
+    name: mariadb-repl
+  schedule:
+    cron: "0 * * * *"
+  storage:
+    persistentVolumeClaim:
+      resources:
+        requests:
+          storage: 100Mi
+      accessModes:
+        - ReadWriteOnce
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi

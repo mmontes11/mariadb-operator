@@ -2,6 +2,7 @@ package builder
 
 import (
 	"errors"
+	"fmt"
 
 	mariadbv1alpha1 "github.com/mariadb-operator/mariadb-operator/api/v1alpha1"
 	cmd "github.com/mariadb-operator/mariadb-operator/pkg/command"
@@ -166,20 +167,44 @@ func jobMariadbContainer(cmd *cmd.Command, volumeMounts []corev1.VolumeMount, en
 	return jobContainer("mariadb", cmd, mariadb.Spec.Image, volumeMounts, envVar, resources, mariadb, securityContext)
 }
 
-func jobBatchStorageVolume(volumeSource *corev1.VolumeSource, s3 *mariadbv1alpha1.S3) ([]corev1.Volume, []corev1.VolumeMount) {
-	volumes :=
-		[]corev1.Volume{
-			{
-				Name:         batchStorageVolume,
-				VolumeSource: *volumeSource,
-			},
-		}
+func jobBatchStorageVolume(volumeSource *corev1.VolumeSource, mariaDb *mariadbv1alpha1.MariaDB,
+	mountDataDir bool, s3 *mariadbv1alpha1.S3) ([]corev1.Volume, []corev1.VolumeMount) {
+
+	volumes := []corev1.Volume{
+		{
+			Name:         batchStorageVolume,
+			VolumeSource: *volumeSource,
+		}}
+
 	volumeMounts := []corev1.VolumeMount{
 		{
 			Name:      batchStorageVolume,
 			MountPath: batchStorageMountPath,
-		},
+		}}
+
+	if mountDataDir {
+
+		dataVolume := corev1.Volume{
+			Name: batchDataVolume,
+			VolumeSource: corev1.VolumeSource{
+				PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
+					ClaimName: fmt.Sprintf("storage-%s-%d", mariaDb.Name, *mariaDb.Status.CurrentPrimaryPodIndex),
+					ReadOnly:  true,
+				},
+			},
+		}
+
+		dataVolumeMount := corev1.VolumeMount{
+			Name:      batchDataVolume,
+			MountPath: batchDataMountPath,
+			ReadOnly:  true,
+		}
+
+		volumes = append(volumes, dataVolume)
+		volumeMounts = append(volumeMounts, dataVolumeMount)
+
 	}
+
 	if s3 != nil && s3.TLS != nil && s3.TLS.Enabled && s3.TLS.CASecretKeyRef != nil {
 		volumes = append(volumes, corev1.Volume{
 			Name: batchS3PKI,
@@ -194,7 +219,9 @@ func jobBatchStorageVolume(volumeSource *corev1.VolumeSource, s3 *mariadbv1alpha
 			MountPath: batchS3PKIMountPath,
 		})
 	}
+
 	return volumes, volumeMounts
+
 }
 
 func jobEnv(mariadb *mariadbv1alpha1.MariaDB) []v1.EnvVar {

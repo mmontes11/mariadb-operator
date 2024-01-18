@@ -254,6 +254,19 @@ var rootCmd = &cobra.Command{
 			setupLog.Error(err, "Unable to create controller", "controller", "Backup")
 			os.Exit(1)
 		}
+
+		if err = (&controller.MariaBackupReconciler{
+			Client:            client,
+			Scheme:            scheme,
+			Builder:           builder,
+			RefResolver:       refResolver,
+			ConditionComplete: conditionComplete,
+			BatchReconciler:   batchReconciler,
+		}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "Unable to create controller", "controller", "MariaBackup")
+			os.Exit(1)
+		}
+
 		if err = (&controller.RestoreReconciler{
 			Client:            client,
 			Scheme:            scheme,
