@@ -1,17 +1,6 @@
 # Registry
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.27
-
 This documentation aims to provide guidance on how to configure private registries in the `mariadb-operator` CRs.
-
-## Table of contents
-<!-- toc -->
-- [Credentials](#credentials)
-- [<code>MariaDB</code>](#mariadb)
-- [<code>MaxScale</code>](#maxscale)
-- [<code>Backup</code>, <code>Restore</code> and <code>SqlJob</code>](#backup-restore-and-sqljob)
-<!-- /toc -->
 
 ## Credentials
 

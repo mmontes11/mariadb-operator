@@ -8,17 +8,6 @@ Our recommended HA setup for production is:
 
 Refer to the following sections for further detail.
 
-## Table of contents
-<!-- toc -->
-- [Topologies](#topologies)
-- [Kubernetes Services](#kubernetes-services)
-- [MaxScale](#maxscale)
-- [Pod Anti-Affinity](#pod-anti-affinity)
-- [Dedicated Nodes](#dedicated-nodes)
-- [Pod Disruption Budgets](#pod-disruption-budgets)
-- [Reference](#reference)
-<!-- /toc -->
-
 ## Topologies
 
 - **Multi master HA via [Galera](./GALERA.md)**: All nodes support reads and writes. We have a designated primary where the writes are performed.

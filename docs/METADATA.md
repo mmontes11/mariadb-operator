@@ -1,21 +1,6 @@
 # Metadata
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.28
-
 This documentation shows how to configure metadata in the `mariadb-operator` CRs.
-
-## Table of contents
-<!-- toc -->
-- [Children object metadata](#children-object-metadata)
-- [<code>Pod</code> metadata](#pod-metadata)
-- [<code>Service</code> metadata](#service-metadata)
-- [<code>PVC</code> metadata](#pvc-metadata)
-- [Use cases](#use-cases)
-    - [Metallb](#metallb)
-    - [Istio](#istio)
-- [Reference](#reference)
-<!-- /toc -->
 
 ## Children object metadata
 

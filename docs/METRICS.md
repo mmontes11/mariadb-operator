@@ -1,20 +1,6 @@
 # Prometheus metrics
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.24
-
 `mariadb-operator` is able to provision MariaDB instances and automatically configure [Prometheus](https://github.com/prometheus/prometheus) to scrape their metrics so they can be used later on to build [Grafana dashboards](#grafana-dashboards) or trigger Alertmanager alerts.
-
-## Table of contents
-<!-- toc -->
-- [Operator metrics](#operator-metrics)
-- [Exporter](#exporter)
-- [<code>ServiceMonitor</code>](#servicemonitor)
-- [Configuration](#configuration)
-- [Prometheus reference installation](#prometheus-reference-installation)
-- [Grafana dashboards](#grafana-dashboards)
-- [Reference](#reference)
-<!-- /toc -->
 
 ## Operator metrics
 

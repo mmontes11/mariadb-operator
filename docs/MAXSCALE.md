@@ -1,8 +1,5 @@
 # MaxScale
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.25
-
 > [!IMPORTANT]  
 > MaxScale 23.08 is licensed under [Business Source License](https://github.com/mariadb-corporation/MaxScale/blob/23.08/LICENSE2308.TXT). Make sure you understand the implications before using it!
 
@@ -13,34 +10,7 @@ MaxScale is a sophisticated database proxy, router, and load balancer designed s
 - Replay pending transactions when a server goes down.
 - Support for Galera and Replication.
 
-To better understand what MaxScale is capable of you may check the [product page](https://mariadb.com/docs/server/products/mariadb-maxscale/) and the [documentation](https://mariadb.com/kb/en/maxscale/). 
-
-## Table of contents
-<!-- toc -->
-- [MaxScale resources](#maxscale-resources)
-    - [Servers](#servers)
-    - [Monitors](#monitors)
-    - [Services](#services)
-    - [Listeners](#listeners)
-- [<code>MaxScale</code> CR](#maxscale-cr)
-- [<code>MariaDB</code> CR](#mariadb-cr)
-- [<code>MaxScale</code> embedded in <code>MariaDB</code>](#maxscale-embedded-in-mariadb)
-- [Defaults](#defaults)
-- [Server configuration](#server-configuration)
-- [Server maintenance](#server-maintenance)
-- [Configuration](#configuration)
-- [Authentication](#authentication)
-- [Kubernetes <code>Services</code>](#kubernetes-services)
-- [Connection](#connection)
-- [High availability](#high-availability)
-- [Suspend resources](#suspend-resources)
-- [MaxScale GUI](#maxscale-gui)
-- [MaxScale API](#maxscale-api)
-- [Troubleshooting](#troubleshooting)
-  - [Common errors](#common-errors)
-    - [Permission denied writing <code>/var/lib/maxscale</code>](#permission-denied-writing-varlibmaxscale)
-- [Reference](#reference)
-<!-- /toc -->
+To better understand what MaxScale is capable of you may check the [product page](https://mariadb.com/docs/server/products/mariadb-maxscale/) and the [documentation](https://mariadb.com/kb/en/maxscale/).
 
 ## MaxScale resources
 

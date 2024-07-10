@@ -2,22 +2,6 @@
 
 In this guide, we will be configuring a local environment to run `mariadb-operator` so you can develop and test features without hassle. The local `mariadb-operator` will be able to resolve DNS and connect to MariaDB as if it was running inside a Kubernetes cluster.
 
-## Table of contents
-<!-- toc -->
-- [Flavours](#flavours)
-    - [devcontainer](#devcontainer)
-    - [local](#local)
-- [Getting started](#getting-started)
-- [Cluster](#cluster)
-- [Network](#network)
-- [Dependencies](#dependencies)
-- [Generate](#generate)
-- [Install](#install)
-- [Build](#build)
-- [Run](#run)
-- [Test](#test)
-<!-- /toc -->
-
 ## Flavours
 
 #### devcontainer

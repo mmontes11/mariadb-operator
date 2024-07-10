@@ -1,17 +1,6 @@
 # Configuration
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.28
-
 This documentation aims to provide guidance on various configuration aspects across many `mariadb-operator` CRs. 
-
-## Table of contents
-<!-- toc -->
-- [my.cnf](#mycnf)
-- [Passwords](#passwords)
-- [External resources](#external-resources)
-- [Probes](#probes)
-<!-- /toc -->
 
 ## my.cnf
 

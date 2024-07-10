@@ -1,30 +1,6 @@
 # Backup and Restore
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.28
-
 `mariadb-operator` allows you to declarativaly take backups by defining `Backup` resources and later on restore them by using their `Restore` counterpart. These resources get reconciled into `Job`/`CronJob` resources that automatically perform the backup/restore operations, so you don't need to manually script them.
-
-## Table of contents
-<!-- toc -->
-- [Storage types](#storage-types)
-- [<code>Backup</code> CR](#backup-cr)
-    - [Scheduling](#scheduling)
-    - [Retention policy](#retention-policy)
-- [<code>Restore</code> CR](#restore-cr)
-    - [Target recovery time](#target-recovery-time)
-- [Bootstrap new <code>MariaDB</code> instances](#bootstrap-new-mariadb-instances)
-- [Backup and restore specific databases](#backup-and-restore-specific-databases)
-- [Extra options](#extra-options)
-- [Galera backup limitations](#galera-backup-limitations)
-    - [<code>mysql.global_priv</code>](#mysqlglobal_priv)
-    - [<code>LOCK TABLES</code>](#lock-tables)
-- [Migrating to a <code>MariaDB</code> with different topology](#migrating-to-a-mariadb-with-different-topology)
-    - [Migrating between standalone and replicated <code>MariaDBs</code>](#migrating-between-standalone-and-replicated-mariadbs)
-    - [Migrating from standalone/replicated to Galera <code>MariaDBs</code>](#migrating-from-standalonereplicated-to-galera-mariadbs)
-- [Minio reference installation](#minio-reference-installation)
-- [Reference](#reference)
-<!-- /toc -->
 
 ## Storage types
 

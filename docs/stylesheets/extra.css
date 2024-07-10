@@ -1,3 +1,4 @@
 [data-md-color-primary="mariadb-blue"] {
-    --md-primary-fg-color: #00838f;
+  --md-primary-fg-color: #00838f;
+  --md-primary-fg-color--dark: #20536f;
 }

@@ -23,6 +23,14 @@ theme:
   custom_dir: ./docs/overrides
   logo: assets/mariadb_medium.svg
   favicon: assets/mariadb_favicon.svg
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 extra:
   version:
     provider: mike
@@ -35,3 +43,7 @@ extra:
       link: https://www.linkedin.com/company/mariadb
 extra_css:
   - stylesheets/extra.css
+exclude_docs: |
+  releases/
+  Dockerfile
+  requirements.txt

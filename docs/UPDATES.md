@@ -1,19 +1,6 @@
 # Updates
 
-> [!NOTE]  
-> This documentation applies to `mariadb-operator` version >= v0.0.29
-
 This documentation aims to describe the supported strategies to perform updates of the `MariaDB` resource. 
-
-## Table of contents
-<!-- toc -->
-- [Update strategies](#update-strategies)
-- [Configuration](#configuration)
-- [Trigger updates](#trigger-updates)
-- [<code>ReplicasFirstPrimaryLast</code>](#replicasfirstprimarylast)
-- [<code>RollingUpdate</code>](#rollingupdate)
-- [<code>OnDelete</code>](#ondelete)
-<!-- /toc -->
 
 ## Update strategies
 
