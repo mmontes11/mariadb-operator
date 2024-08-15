@@ -185,6 +185,7 @@ func (r *ReplicationConfig) reconcileUserSql(ctx context.Context, mariadb *maria
 	opts *userSqlOpts) error {
 	replPasswordRef := newReplPasswordRef(mariadb)
 	var replPassword string
+	var user *mariadbv1alpha1.User
 
 	req := secret.PasswordRequest{
 		Owner:    mariadb,
@@ -207,7 +208,8 @@ func (r *ReplicationConfig) reconcileUserSql(ctx context.Context, mariadb *maria
 		return fmt.Errorf("error checking if replication user exists: %v", err)
 	}
 	if exists {
-		if err := client.AlterUser(ctx, opts.username, replPassword); err != nil {
+		maxUserConnections := user.Spec.MaxUserConnections
+		if err := client.AlterUser(ctx, opts.username, replPassword, maxUserConnections); err != nil {
 			return fmt.Errorf("error altering replication user: %v", err)
 		}
 	} else {

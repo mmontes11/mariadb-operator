@@ -264,8 +264,9 @@ func (c *Client) DropUser(ctx context.Context, accountName string) error {
 	return c.ExecFlushingPrivileges(ctx, query)
 }
 
-func (c *Client) AlterUser(ctx context.Context, accountName, password string) error {
-	query := fmt.Sprintf("ALTER USER '%s' IDENTIFIED BY '%s';", accountName, password)
+func (c *Client) AlterUser(ctx context.Context, accountName, password string, maxConnections int32) error {
+	query := fmt.Sprintf("ALTER USER '%s' IDENTIFIED BY '%s' MAX_USER_CONNECTIONS %d;",
+		accountName, password, maxConnections)
 
 	return c.ExecFlushingPrivileges(ctx, query)
 }

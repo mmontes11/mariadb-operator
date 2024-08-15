@@ -29,7 +29,7 @@ type UserSpec struct {
 	// +optional
 	// +kubebuilder:default=10
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,xDescriptors={"urn:alm:descriptor:com.tectonic.ui:number"}
-	MaxUserConnections int32 `json:"maxUserConnections,omitempty" webhook:"inmutable"`
+	MaxUserConnections int32 `json:"maxUserConnections,omitempty"` //webhook:"inmutable"`
 	// Name overrides the default name provided by metadata.name.
 	// +optional
 	// +kubebuilder:validation:MaxLength=80

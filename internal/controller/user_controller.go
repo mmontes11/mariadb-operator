@@ -132,8 +132,8 @@ func (wr *wrappedUserReconciler) Reconcile(ctx context.Context, mdbClient *sqlCl
 		if err := mdbClient.CreateUser(ctx, accountName, createUserOpts...); err != nil {
 			return fmt.Errorf("error creating User: %v", err)
 		}
-	} else if password != "" {
-		if err := mdbClient.AlterUser(ctx, username, password); err != nil {
+	} else if password != "" || wr.user.Spec.MaxUserConnections > 0 {
+		if err := mdbClient.AlterUser(ctx, username, password, wr.user.Spec.MaxUserConnections); err != nil {
 			return fmt.Errorf("error altering User: %v", err)
 		}
 	}
