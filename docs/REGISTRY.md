@@ -17,11 +17,6 @@ This documentation aims to provide guidance on how to configure private registri
 
 The first requirement to access a private registry is having credentials in the cluster that will be pulling the images. Kubernetes has a specific type of `Secret` `kubernetes.io/dockerconfigjson` designed specifically for this purpose. Please, refer to the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) to see how it can be configured.
 
-For convenience, this repo provides a make target that can be used to configure your existing credentials available in `~/.docker/config` as a `kubernetes.io/dockerconfigjson` `Secret`:
-
-```bash
-REGISTRY_PULL_SECRET=registry DOCKER_CONFIG=~/.docker/config.json make registry-secret
-```
 
 ## `MariaDB` 
 

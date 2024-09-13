@@ -71,7 +71,9 @@ helm install mariadb-operator mariadb-operator/mariadb-operator \
 
 ## Openshift installation
 
-The Openshift installation is managed separately in the [mariadb-operator-helm](https://github.com/mariadb-operator/mariadb-operator-helm) repository, which contains a [helm based operator](https://sdk.operatorframework.io/docs/building-operators/helm/) that allows you to install `mariadb-operator` via [OLM](https://olm.operatorframework.io/docs/).
+We have 2 different operator flavours to install MariaDB in OpenShift:
+- Certified operator for MariaDB Enterprise. This is the recommended way, please refer to the [OpenShift documentation](./docs/OPENSHIFT.md).
+- Helm-based operator for MariaDB Community. It is maintained on a best-effort basis and managed by the [mariadb-operator-helm repository](https://github.com/mariadb-operator/mariadb-operator-helm).
 
 ## Image compatibility
 `mariadb-operator` is only compatible with official MariaDB images. Refer to the [images documentation](./docs/DOCKER.md) for further detail.
