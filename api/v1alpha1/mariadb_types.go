@@ -553,7 +553,12 @@ type MariaDB struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self.replicas %2 == 1 || self.replicasAllowEvenNumber", message="An odd number of MariaDB instances (mariadb.spec.replicas) is required to avoid split brain situations. Use 'mariadb.spec.replicasAllowEvenNumber: true' to disable this validation."
+	// +kubebuilder:validation:XValidation:rule="self.replicas %2 == 1 || self.?replicasAllowEvenNumber.orValue(false) == true", message="An odd number of MariaDB instances (mariadb.spec.replicas) is required to avoid split brain situations. Use 'mariadb.spec.replicasAllowEvenNumber: true' to disable this validation."
+	// +kubebuilder:validation:XValidation:rule="self.?galera.enabled.orValue(false) == false || self.?replication.enabled.orValue(false) == false", message="You may only enable one HA method at a time, either 'mariadb.spec.galera.enabled' or 'mariadb.spec.replication.enabled'"
+	// +kubebuilder:validation:XValidation:rule="self.replicas <= 1 || (self.replicas > 1 && (self.?galera.enabled.orValue(false) == true || self.?replication.enabled.orValue(false) == true))", message="Multiple replicas (mariadb.spec.replicas) can only be specified when 'mariadb.spec.galera.enabled' or 'mariadb.spec.replication.enabled' are true"
+	// +kubebuilder:validation:XValidation:rule="self.replicas > 1 || (self.replicas <= 1 && (self.?galera.enabled.orValue(false) == false || self.?replication.enabled.orValue(false) == false))", message="If 'mariadb.spec.replicas' is set to 1 or less than 'mariadb.spec.galera.enabled' and 'mariadb.spec.replication.enabled' have to be false to disable HA"
+	// +kubebuilder:validation:XValidation:rule="self.?galera.enabled.orValue(false) == false || (self.?galera.enabled.orValue(false) == true && self.?galera.replicaThreads.orValue(0) > 0)", message="If 'mariadb.spec.galera.enabled' is true than 'mariadb.spec.galera.replicaThreads' must be at least 1"
+	// +kubebuilder:validation:XValidation:rule="type(self.rootPasswordSecretKeyRef) != map || (type(self.rootPasswordSecretKeyRef) == map && self.?rootEmptyPassword.orValue(false) == false)", message="'mariadb.spec.rootEmptyPassword' must be disabled when 'mariadb.spec.rootPasswordSecretKeyRef' is specified"
 	Spec   MariaDBSpec   `json:"spec"`
 	Status MariaDBStatus `json:"status,omitempty"`
 }

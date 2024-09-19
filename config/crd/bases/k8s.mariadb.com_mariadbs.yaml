@@ -25076,7 +25076,30 @@ spec:
             - message: 'An odd number of MariaDB instances (mariadb.spec.replicas)
                 is required to avoid split brain situations. Use ''mariadb.spec.replicasAllowEvenNumber:
                 true'' to disable this validation.'
-              rule: self.replicas %2 == 1 || self.replicasAllowEvenNumber
+              rule: self.replicas %2 == 1 || self.?replicasAllowEvenNumber.orValue(false)
+                == true
+            - message: You may only enable one HA method at a time, either 'mariadb.spec.galera.enabled'
+                or 'mariadb.spec.replication.enabled'
+              rule: self.?galera.enabled.orValue(false) == false || self.?replication.enabled.orValue(false)
+                == false
+            - message: Multiple replicas (mariadb.spec.replicas) can only be specified
+                when 'mariadb.spec.galera.enabled' or 'mariadb.spec.replication.enabled'
+                are true
+              rule: self.replicas <= 1 || (self.replicas > 1 && (self.?galera.enabled.orValue(false)
+                == true || self.?replication.enabled.orValue(false) == true))
+            - message: If 'mariadb.spec.replicas' is set to 1 or less than 'mariadb.spec.galera.enabled'
+                and 'mariadb.spec.replication.enabled' have to be false to disable
+                HA
+              rule: self.replicas > 1 || (self.replicas <= 1 && (self.?galera.enabled.orValue(false)
+                == false || self.?replication.enabled.orValue(false) == false))
+            - message: If 'mariadb.spec.galera.enabled' is true than 'mariadb.spec.galera.replicaThreads'
+                must be at least 1
+              rule: self.?galera.enabled.orValue(false) == false || (self.?galera.enabled.orValue(false)
+                == true && self.?galera.replicaThreads.orValue(0) > 0)
+            - message: '''mariadb.spec.rootEmptyPassword'' must be disabled when ''mariadb.spec.rootPasswordSecretKeyRef''
+                is specified'
+              rule: type(self.rootPasswordSecretKeyRef) != map || (type(self.rootPasswordSecretKeyRef)
+                == map && self.?rootEmptyPassword.orValue(false) == false)
           status:
             description: MariaDBStatus defines the observed state of MariaDB
             properties:

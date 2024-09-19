@@ -478,20 +478,6 @@ var _ = Describe("MariaDB webhook", func() {
 				},
 				false,
 			),
-			Entry(
-				"Valid rootEmptyPassword",
-				&MariaDB{
-					ObjectMeta: meta,
-					Spec: MariaDBSpec{
-						RootPasswordSecretKeyRef: GeneratedSecretKeyRef{},
-						RootEmptyPassword:        ptr.To(true),
-						Storage: Storage{
-							Size: ptr.To(resource.MustParse("100Mi")),
-						},
-					},
-				},
-				false,
-			),
 		)
 
 		It("Should default replication", func() {

@@ -1,7 +1,6 @@
 package v1alpha1
 
 import (
-	"errors"
 	"reflect"
 
 	galerakeys "github.com/mariadb-operator/mariadb-operator/pkg/galera/config/keys"
@@ -94,23 +93,6 @@ func (r *MariaDB) ValidateDelete() (admission.Warnings, error) {
 }
 
 func (r *MariaDB) validateHA() error {
-	if r.Replication().Enabled && r.IsGaleraEnabled() {
-		return errors.New("You may only enable one HA method at a time, either 'spec.replication' or 'spec.galera'")
-	}
-	if !r.IsHAEnabled() && r.Spec.Replicas > 1 {
-		return field.Invalid(
-			field.NewPath("spec").Child("replicas"),
-			r.Spec.Replicas,
-			"Multiple replicas can only be specified when 'spec.replication' or 'spec.galera' are configured",
-		)
-	}
-	if r.IsHAEnabled() && r.Spec.Replicas <= 1 {
-		return field.Invalid(
-			field.NewPath("spec").Child("replicas"),
-			r.Spec.Replicas,
-			"Multiple replicas must be specified when 'spec.replication' or 'spec.galera' are configured",
-		)
-	}
 	return nil
 }
 
@@ -147,13 +129,6 @@ func (r *MariaDB) validateGalera() error {
 				err.Error(),
 			)
 		}
-	}
-	if galera.ReplicaThreads < 0 {
-		return field.Invalid(
-			field.NewPath("spec").Child("galera").Child("replicaThreads"),
-			galera.ReplicaThreads,
-			"'spec.galera.replicaThreads' must be at least 1",
-		)
 	}
 	_, exists := galera.ProviderOptions[galerakeys.WsrepOptISTRecvAddr]
 	if exists {
@@ -275,12 +250,5 @@ func (r *MariaDB) validateUpdateStorage(old *MariaDB) error {
 }
 
 func (r *MariaDB) validateRootPassword() error {
-	if r.IsRootPasswordEmpty() && r.IsRootPasswordDefined() {
-		return field.Invalid(
-			field.NewPath("spec").Child("rootEmptyPassword"),
-			r.Spec.RootEmptyPassword,
-			"'spec.rootEmptyPassword' must be disabled when 'spec.rootPasswordSecretKeyRef' is specified",
-		)
-	}
 	return nil
 }
