@@ -33,7 +33,7 @@ ENV_ENT ?= \
 	TEST_ENTERPRISE=true \
 	KUBEBUILDER_ASSETS=$(KUBEBUILDER_ASSETS)
 
-TEST_ARGS ?= --coverprofile=cover.out --timeout 30m
+TEST_ARGS ?= --coverprofile=cover.out --timeout 30m -p
 TEST ?= $(ENV) $(GINKGO) $(TEST_ARGS)
 TEST_ENT ?= $(ENV_ENT) $(GINKGO) $(TEST_ARGS)
 
