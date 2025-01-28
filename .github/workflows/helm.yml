@@ -35,7 +35,7 @@ jobs:
           python-version: "3.9"
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.7.0
 
       - name: List changed
         id: list-changed
@@ -78,7 +78,7 @@ jobs:
           python-version: "3.9"
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.6.1
+        uses: helm/chart-testing-action@v2.7.0
 
       - name: List changed
         id: list-changed
