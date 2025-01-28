@@ -216,3 +216,12 @@ func SetReadySuspended(c Conditioner) {
 		Message: "Suspended",
 	})
 }
+
+func SetReadyStopped(c Conditioner) {
+	c.SetCondition(metav1.Condition{
+		Type:    mariadbv1alpha1.ConditionTypeReady,
+		Status:  metav1.ConditionFalse,
+		Reason:  mariadbv1alpha1.ConditionReasonStopped,
+		Message: "Stopped",
+	})
+}

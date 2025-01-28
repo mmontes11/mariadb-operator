@@ -4707,7 +4707,6 @@ spec:
                     type: integer
                 type: object
               replicas:
-                default: 1
                 description: Replicas indicates the number of desired instances.
                 format: int32
                 type: integer
