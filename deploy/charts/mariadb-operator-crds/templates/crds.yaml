@@ -54,6 +54,11 @@ spec:
           spec:
             description: BackupSpec defines the desired state of Backup
             properties:
+              activeDeadlineSeconds:
+                description: ActiveDeadlineSeconds defines the maximum amount of time
+                  in seconds that the Backup Job can run.
+                format: int32
+                type: integer
               affinity:
                 description: Affinity to be used in the Pod.
                 properties:
