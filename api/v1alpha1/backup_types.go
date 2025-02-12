@@ -132,6 +132,10 @@ type BackupSpec struct {
 	// +optional
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,xDescriptors={"urn:alm:descriptor:com.tectonic.ui:advanced"}
 	InheritMetadata *Metadata `json:"inheritMetadata,omitempty"`
+	// ActiveDeadlineSeconds defines the maximum amount of time in seconds that the Backup Job can run.
+	// +optionsl
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,xDescriptors={"urn:alm:descriptor:com.tectonic.ui:number","urn:alm:descriptor:com.tectonic.ui:advanced"}
+	ActiveDeadlineSeconds *int64 `json:"activeDeadlineSeconds,omitempty"`
 }
 
 // BackupStatus defines the observed state of Backup
