@@ -483,9 +483,9 @@ type MariaDBSpec struct {
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
 	MaxScale *MariaDBMaxScaleSpec `json:"maxScale,omitempty"`
 	// Replicas indicates the number of desired instances.
-	// +kubebuilder:default=1
+	// +optional
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,xDescriptors={"urn:alm:descriptor:com.tectonic.ui:podCount"}
-	Replicas int32 `json:"replicas,omitempty"`
+	Replicas int32 `json:"replicas"`
 	// disables the validation check for an odd number of replicas.
 	// +kubebuilder:default=false
 	// +operator-sdk:csv:customresourcedefinitions:type=spec
@@ -820,6 +820,11 @@ func (m *MariaDB) IsUpdating() bool {
 		return false
 	}
 	return condition.Status == metav1.ConditionFalse && condition.Reason == ConditionReasonUpdating
+}
+
+// IsStopped whether a MariaDB is stopped.
+func (m *MariaDB) IsStopped() bool {
+	return m.Spec.Replicas == 0
 }
 
 // IsSuspended whether a MariaDB is suspended.

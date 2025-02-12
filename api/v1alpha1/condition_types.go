@@ -34,6 +34,7 @@ const (
 	ConditionReasonUpdating            string = "Updating"
 	ConditionReasonUpdated             string = "Updated"
 	ConditionReasonSuspended           string = "Suspended"
+	ConditionReasonStopped             string = "Stopped"
 
 	ConditionReasonMaxScaleNotReady string = "MaxScaleNotReady"
 	ConditionReasonMaxScaleReady    string = "MaxScaleReady"

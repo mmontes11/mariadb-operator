@@ -654,7 +654,7 @@ func (r *MariaDBReconciler) reconcileInternalService(ctx context.Context, mariad
 }
 
 func (r *MariaDBReconciler) reconcilePrimaryService(ctx context.Context, mariadb *mariadbv1alpha1.MariaDB) (ctrl.Result, error) {
-	if mariadb.Status.CurrentPrimaryPodIndex == nil {
+	if mariadb.Status.CurrentPrimaryPodIndex == nil && !mariadb.IsStopped() {
 		log.FromContext(ctx).V(1).Info("'status.currentPrimaryPodIndex' must be set")
 		return ctrl.Result{RequeueAfter: 1 * time.Second}, nil
 	}
@@ -725,7 +725,7 @@ func (r *MariaDBReconciler) reconcileSecondaryService(ctx context.Context, maria
 }
 
 func (r *MariaDBReconciler) reconcileSQL(ctx context.Context, mariadb *mariadbv1alpha1.MariaDB) (ctrl.Result, error) {
-	if !mariadb.IsReady() {
+	if !mariadb.IsReady() && !mariadb.IsStopped() {
 		log.FromContext(ctx).V(1).Info("MariaDB not ready. Requeuing SQL resources")
 		return ctrl.Result{RequeueAfter: 1 * time.Second}, nil
 	}
@@ -882,7 +882,7 @@ func (r *MariaDBReconciler) setSpecDefaults(ctx context.Context, mariadb *mariad
 }
 
 func (r *MariaDBReconciler) reconcileSuspend(ctx context.Context, mariadb *mariadbv1alpha1.MariaDB) (ctrl.Result, error) {
-	if mariadb.IsSuspended() {
+	if mariadb.IsSuspended() && !mariadb.IsStopped() {
 		log.FromContext(ctx).V(1).Info("MariaDB is suspended. Skipping...")
 		return ctrl.Result{RequeueAfter: 10 * time.Second}, nil
 	}
@@ -898,7 +898,7 @@ func (r *MariaDBReconciler) reconcileConnection(ctx context.Context, mariadb *ma
 	if !mariadb.IsInitialUserEnabled() {
 		return ctrl.Result{}, nil
 	}
-	if !mariadb.IsReady() {
+	if !mariadb.IsReady() && !mariadb.IsStopped() {
 		return ctrl.Result{RequeueAfter: 1 * time.Second}, nil
 	}
 	if mariadb.IsHAEnabled() {

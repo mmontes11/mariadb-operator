@@ -32,6 +32,13 @@ func (r *MariaDBReconciler) reconcileStatus(ctx context.Context, mdb *mariadbv1a
 	}
 	logger := log.FromContext(ctx).WithName("status").V(1)
 
+	if mdb.IsStopped() {
+		return ctrl.Result{}, r.patchStatus(ctx, mdb, func(status *mariadbv1alpha1.MariaDBStatus) error {
+			condition.SetReadyStopped(status)
+			return nil
+		})
+	}
+
 	var sts appsv1.StatefulSet
 	if err := r.Get(ctx, client.ObjectKeyFromObject(mdb), &sts); err != nil {
 		logger.Info("error getting StatefulSet", "err", err)
